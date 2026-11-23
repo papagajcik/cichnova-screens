@@ -1,0 +1,97 @@
+{
+  "name": "cichnova-screens-admin",
+  "productName": "Cichnova Screens Admin",
+  "version": "1.0.0",
+  "description": "Desktopová administrace Čichnova Screens",
+  "main": "src/main.js",
+  "author": {
+    "name": "Matouš Papoušek",
+    "email": "cichnova@papousek.dev"
+  },
+  "homepage": "https://cichnovabrno.papousek.eu/admin/",
+  "license": "UNLICENSED",
+  "private": true,
+  "cichnovaDesktop": {
+    "macSigned": false
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "electron-log": "^5.4.4",
+    "electron-updater": "^6.8.11"
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "eu.papousek.cichnova.admin",
+    "productName": "Cichnova Screens Admin",
+    "copyright": "Čichnova Screens",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "releaseType": "release"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Cichnova-Screens-Admin-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "runAfterFinish": true,
+      "shortcutName": "Čichnova Screens Admin",
+      "deleteAppDataOnUninstall": false
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "artifactName": "Cichnova-Screens-Admin-${version}-mac.${ext}"
+    },
+    "linux": {
+      "category": "Office",
+      "executableName": "cichnova-screens-admin",
+      "maintainer": "Matouš Papoušek <cichnova@papousek.dev>",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "artifactName": "Cichnova-Screens-Admin-${version}-linux.${ext}"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adresa serveru</title>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;padding:26px;background:#17171d;color:#f2f2f6;font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1{margin:0 0 6px;font-size:20px;letter-spacing:-.01em}
+p{margin:0 0 16px;color:#a0a3b5}
+label{display:block;font-weight:600;margin-bottom:6px}
+input{width:100%;height:44px;padding:0 13px;border-radius:11px;border:1px solid #363847;background:#101014;color:inherit;font:inherit;outline:none}
+input:focus{border-color:#ed6b06;box-shadow:0 0 0 4px rgba(237,107,6,.25)}
+.err{min-height:20px;margin:8px 0 0;color:#fca5a5;font-size:13px}
+.row{display:flex;gap:10px;margin-top:10px;align-items:center}
+button{height:42px;padding:0 18px;border-radius:11px;border:1px solid #363847;background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer}
+button:hover{border-color:#ff9a4d}
+button.pr{background:#c4540a;border-color:#c4540a;color:#fff}
+button.pr:hover{background:#a84608}
+.sp{flex:1}
+button.lnk{border:0;padding:0 4px;color:#ff9a4d;height:auto}
+button:focus-visible{outline:3px solid #ed6b06;outline-offset:2px}
+</style>
+</head>
+<body>
+ <h1>Adresa serveru</h1>
+ <p>Server, na kterém běží administrace Čichnova Screens.</p>
+ <form id="f" novalidate>
+  <label for="u">Adresa</label>
+  <input id="u" type="text" spellcheck="false" autocapitalize="none" placeholder="https://cichnovabrno.papousek.eu">
+  <div class="err" id="e" role="alert"></div>
+  <div class="row"><button type="button" class="lnk" id="reset">Výchozí adresa</button><span class="sp"></span><button type="button" id="cancel">Zrušit</button><button class="pr" type="submit">Uložit a připojit</button></div>
+ </form>
+<script>
+(function(){
+ var u=document.getElementById('u'),e=document.getElementById('e');
+ u.value=new URLSearchParams(location.search).get('server')||'';u.focus();u.select();
+ document.getElementById('f').addEventListener('submit',async function(ev){
+  ev.preventDefault();e.textContent='';
+  var r=await window.desktop.saveServer(u.value);
+  if(!r.ok)e.textContent=r.error||'Adresu se nepodařilo uložit.';
+ });
+ document.getElementById('cancel').onclick=function(){window.desktop.closeDialog()};
+ document.getElementById('reset').onclick=async function(){var i=await window.desktop.info();u.value=i.defaultServer;u.focus()};
+})();
+</script>
+</body>
+</html>

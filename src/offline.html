@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Čichnova Screens – bez připojení</title>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b0b2b;color:#e8eaf7;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{width:min(460px,90vw)}
+.mark{width:52px;height:52px;border-radius:14px;background:#15153f;display:grid;place-items:center;margin-bottom:22px;border:1px solid #2a2c5c}
+.mark svg{width:26px;height:26px;fill:none;stroke:#ff9a4d;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+h1{margin:0 0 8px;font-size:26px;letter-spacing:-.02em;color:#fff}
+p{margin:0 0 6px;color:#b4b9dc}
+code{display:block;margin:14px 0 4px;padding:10px 12px;border-radius:10px;background:#15153f;color:#fff;font:13px ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+small{color:#8d92bd}
+.row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+button{height:44px;padding:0 18px;border-radius:11px;border:1px solid #363a73;background:transparent;color:#e8eaf7;font:inherit;font-weight:600;cursor:pointer}
+button:hover{border-color:#ff9a4d}
+button.pr{background:#c4540a;border-color:#c4540a;color:#fff}
+button.pr:hover{background:#a84608}
+button:focus-visible{outline:3px solid #ed6b06;outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+ <div class="mark"><svg viewBox="0 0 24 24"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01"/><path d="M3 3l18 18"/></svg></div>
+ <h1>Administrace není dostupná</h1>
+ <p>Aplikace se nemůže připojit k serveru. Zkontrolujte internet nebo adresu serveru.</p>
+ <code id="srv"></code>
+ <small id="err"></small>
+ <div class="row"><button class="pr" id="retry">Zkusit znovu</button><button id="change">Změnit server</button></div>
+ <p style="margin-top:18px"><small id="auto"></small></p>
+</main>
+<script>
+(function(){
+ var q=new URLSearchParams(location.search);
+ document.getElementById('srv').textContent=q.get('server')||'';
+ var err=q.get('error');if(err)document.getElementById('err').textContent=err.replace(/^net::/,'');
+ var left=10,label=document.getElementById('auto');
+ function tick(){label.textContent='Zkusím to znovu za '+left+' s';if(left--<=0){window.desktop.retry()}}
+ tick();var t=setInterval(tick,1000);
+ document.getElementById('retry').onclick=function(){clearInterval(t);window.desktop.retry()};
+ document.getElementById('change').onclick=function(){clearInterval(t);label.textContent='';window.desktop.openServerDialog()};
+})();
+</script>
+</body>
+</html>
